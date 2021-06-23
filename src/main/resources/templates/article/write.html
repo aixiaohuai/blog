@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>发表文章 编辑文章</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="小坏小坏">
+    <meta name="description" content="小坏小坏">
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/css/global.css">
+    <script src="/Content/ace/ace.js"></script>
+</head>
+<body>
+
+<!--公共头-->
+<div th:replace="~{common/header}"></div>
+
+<div class="layui-container medusa-marginTop">
+    <div class="fly-panel" pad20 style="padding-top: 5px;">
+        <div class="layui-form layui-form-pane">
+            <div class="layui-tab layui-tab-brief" lay-filter="user">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">发表文章</li>
+                </ul>
+                <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
+                    <div class="layui-tab-item layui-show">
+                        <form>
+                            <div class="layui-row layui-col-space15 layui-form-item">
+                                <div class="layui-col-md3">
+                                    <label class="layui-form-label">所在专栏</label>
+                                    <div class="layui-input-block">
+                                        <select lay-verify="required" name="columnId" lay-filter="column">
+                                            <option></option>
+                                            <option th:if="${article}" th:selected="${article.columnId}==${panel.columnId}"
+                                                    th:each="panel:${columns}"
+                                                    th:value="${panel.columnId}"
+                                                     th:text="${panel.columnName}"></option>
+                                            <option th:unless="${article}" th:each="panel:${columns}" th:value="${panel.columnId}"
+                                                     th:text="${panel.columnName}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md9">
+                                    <label class="layui-form-label">标题</label>
+                                    <div class="layui-input-block">
+                                        <input th:if="${article}" th:value="${article.articleTitle}" type="text"
+                                               name="articleTitle" required
+                                               lay-verify="required"
+                                               autocomplete="off" class="layui-input">
+                                        <input th:unless="${article}" type="text" name="articleTitle" required lay-verify="required"
+                                                autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <input th:if="${article}" type="hidden" name="articleId" th:value="${article.articleId}">
+
+                            <div class="layui-form-item layui-form-text">
+                                <div class="layui-input-block">
+                                    <textarea  id="layeditDemo"
+                                              name="articleContent" required
+                                              lay-verify="required" placeholder="详细描述"
+                                               class="layui-textarea fly-editor"
+                                               style="height: 260px;"></textarea>
+
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <button class="layui-btn" lay-filter="*" lay-submit
+                                        alert="true">[[${article}?'立即更新':'立即发布']]
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{common/footer}"></div>
+
+<script src="/layui/layui.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    layui.use(['layedit', 'layer', 'jquery','form'], function () {
+        var token = "Bearer "+[[${session.token}]]
+        var $ = layui.jquery,
+            layer = layui.layer,
+            layedit = layui.layedit,
+            form = layui.form
+        layedit.set({
+            //暴露layupload参数设置接口 --详细查看layupload参数说明
+            uploadImage: {
+                url: '/file',
+                headers:{
+                    Authorization:token
+                },
+                accept: 'image',
+                acceptMime: 'image/*',
+                exts: 'jpg|png|gif|bmp|jpeg|gif|jfif',
+                size: 1024 * 10,
+                data: {
+                },
+                done: function (data) {
+                    console.log(data)
+                },
+            },
+            uploadVideo: {
+                url: '/file',
+                headers:{
+                    Authorization:token
+                },
+                accept: 'video',
+                acceptMime: 'video/*',
+                exts: 'mp4|flv|avi|rm|rmvb',
+                size: 1024 * 10 * 2*10,
+                done: function (data) {
+                    console.log(data)
+                },
+            },
+            uploadFiles: {
+                url: '/file',
+                headers:{
+                    Authorization:token
+                },
+                accept: 'file',
+                acceptMime: 'file/*',
+                size: '20480',
+                autoInsert: true, //自动插入编辑器设置
+                done: function (data) {
+                    console.log(data)
+                },
+            },
+            //右键删除图片/视频时的回调参数，post到后台删除服务器文件等操作，
+            //传递参数：
+            //图片： imgpath --图片路径
+            //视频： filepath --视频路径 imgpath --封面路径
+            //附件： filepath --附件路径
+            calldel: {
+                url: '/file/delete',
+                headers:{
+                    Authorization:token
+                },
+                done: function (data) {
+
+                },
+            },
+            rightBtn: {
+                type: 'layBtn', //default|layBtn|custom  浏览器默认/layedit右键面板/自定义菜单 default和layBtn无需配置customEvent
+                customEvent: function (targetName, event) {
+                    //根据tagName分类型设置
+                    switch (targetName) {
+                        case 'img':
+                            alert('this is img')
+                            break
+                        default:
+                            alert('hello world')
+                            break
+                    }
+                    //或者直接统一设定
+                    //alert("all in one");
+                },
+            },
+            //测试参数
+            backDelImg: true,
+            //开发者模式 --默认为false
+            devmode: true,
+            //是否自动同步到textarea
+            autoSync: true,
+            //内容改变监听事件
+            onchange: function (content) {
+                console.log(content)
+            },
+            //插入代码设置 --hide:false 等同于不配置codeConfig
+            codeConfig: {
+                hide: true, //是否隐藏编码语言选择框
+                default: 'javascript', //hide为true时的默认语言格式
+                encode: true, //是否转义
+                class: 'layui-code', //默认样式
+            },
+            //新增iframe外置样式和js
+            quote: {
+                style: [''],
+            },
+            //自定义样式-暂只支持video添加
+            //, customTheme: {
+            //    video: {
+            //        title: ['原版', 'custom_1', 'custom_2']
+            //        , content: ['', 'theme1', 'theme2']
+            //        , preview: ['', '/images/prive.jpg', '/images/prive2.jpg']
+            //    }
+            //}
+            //插入自定义链接
+            customlink: {
+                title: '哔哩哔哩 (゜-゜)つロ 干杯~-bilibili',
+                href: 'https://www.bilibili.com/',
+                onmouseup: '',
+            },
+            // facePath: 'http://knifez.gitee.io/kz.layedit/Content/Layui-KnifeZ/',
+            facePath: '/layui/',
+            devmode: true,
+            videoAttr: 'preload="none"',
+            //预览样式设置，等同layer的offset和area规则，暂时只支持offset ,area两个参数
+            //默认为 offset:['r'],area:['50%','100%']
+            //, previewAttr: {
+            //    offset: 'r'
+            //    ,area:['50%','100%']
+            //}
+            tool: [
+                'html',
+                'undo',
+                'redo',
+                'code',
+                'strong',
+                'italic',
+                'underline',
+                'del',
+                'addhr',
+                '|',
+                'removeformat',
+                'fontFomatt',
+                'fontfamily',
+                'fontSize',
+                'lineHeight',
+                'fontBackColor',
+                'colorpicker',
+                'face',
+                '|',
+                'left',
+                'center',
+                'right',
+                '|',
+                'link',
+                'unlink',
+                'images',
+                'image_alt',
+                 'video',
+                'attachment',
+                // 'anchors',
+                '|',
+                'table',
+                'customlink',
+                // 'fullScreen',
+                'preview',
+            ],
+            height: '500px',
+        })
+        var ieditor = layedit.build('layeditDemo')
+        //设置编辑器内容
+        layedit.setContent(
+            ieditor,
+            false
+        )
+        var article = [[${article}]];
+        if(article){
+            layedit.setContent(ieditor, article.articleContent, false)
+        }
+
+        form.on('submit(*)', function(data){
+            $.ajax({
+                type:"POST",
+                url:"/article/write",
+                data:data.field,
+                headers:{
+                        Authorization:token
+                    },
+                success(res){
+                        layer.alert(res.msg, {
+                            icon: 1,
+                            time: 10*1000,
+                            end(){
+                                if(res.action){
+                                    location.href = res.action;
+                                }
+                            }
+                        })
+                },
+                error(res){
+                    layer.alert("未登录", {
+                        icon: 1,
+                        time: 10*1000,
+                        end(){
+                            location.href = "/login";
+                        }
+                    })
+                }
+            })
+            return false;
+        });
+
+    })
+</script>
+</body>
+</html>

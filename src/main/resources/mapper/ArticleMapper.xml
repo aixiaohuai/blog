@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.medusa.blog.mapper.ArticleMapper">
+
+    <select id="queryTopArticle" parameterType="com.medusa.blog.vo.ArticQueryVO"
+            resultType="com.medusa.blog.model.Article">
+        SELECT t.* from article t
+
+        ORDER BY t.RELEASE_DATE desc
+    </select>
+
+</mapper>

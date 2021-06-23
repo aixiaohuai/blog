@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>My Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="medusa">
+    <meta name="description" content="简易blog文章发布实现">
+    <link rel="stylesheet" href="../layui/css/layui.css">
+    <link rel="stylesheet" href="../css/global.css">
+
+</head>
+<body>
+
+<!--公共头-->
+<div th:replace="~{common/header}"></div>
+<!--导航栏信息-->
+<div th:replace="~{common/panel}"></div>
+<!--banner-->
+
+
+<div class="layui-container">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md8">
+            <div class="medusa-panel" style="margin-bottom: 0;">
+                <ul class="medusa-list" th:each="article:${articPage}">
+                    <li>
+                        <h2>
+                            <a th:href="@{'article/detail/' + ${article.articleId} }"
+                               th:text="${article.articleTitle}"></a>
+                        </h2>
+                        <div class="medusa-list-info">
+                            <span th:text="${#dates.format(article.releaseDate,'yyyy-MM-dd HH:mm:ss')}"></span>
+                        </div>
+                        <div th:if="${session.token}" class="medusa-column-right">
+                            <button  class="layui-btn updateArticle" th:aid="${article.articleId}">编辑
+                            </button>
+                            <button  class="layui-btn delArticle" th:aid="${article.articleId}">删除</button>
+                        </div>
+                    </li>
+                    <input type="hidden" th:value="${articTotal}" id="page-total">
+                    <input type="hidden" th:value="${current}" id="page-current">
+                    <input type="hidden" th:value="${pageSize}" id="page-size">
+                <!--分页-->
+                </ul>
+                <div id="laypage-main"></div>
+            </div>
+        </div>
+        <!--右侧-->
+        <!--<div th:replace="~{common/right}"></div>-->
+    </div>
+</div>
+
+<!--底部-->
+<div th:replace="~{common/footer}"></div>
+
+<script src="../layui/layui.js"></script>
+
+<script>
+   layui.use(['laypage','jquery','layer'], function(){
+       var laypage = layui.laypage;
+       var $ = layui.jquery;
+       var layer=layui.layer;
+       //执行一个laypage实例
+       laypage.render({
+           elem: 'laypage-main'
+           ,count: $('#page-total').val()
+           ,curr: $('#page-current').val()
+           ,limit: $('#page-size').val()
+           ,jump: function(obj, first){
+               //首次不执行
+               if(!first){
+                   location.href = "?currentPage=" + obj.curr;
+               }
+           }
+       });
+       $(".updateArticle").click(function (data) {
+           const aid = data.target.getAttribute("aid");
+           $.ajax({
+               type:"GET",
+               url:"/article/"+aid,
+               headers:{
+                   Authorization:"Bearer [[${session.token}]]"
+               },
+               success : function(data) {
+                   document.write(data);
+               }
+
+           })
+       })
+       $(".delArticle").click(function (data) {
+           const aid = data.target.getAttribute("aid");
+           layer.confirm("确定要删除吗?",{
+               title:"确认",
+               yes(index){
+                   $.ajax({
+                       type:"DELETE",
+                       url:"/article/"+aid,
+                       headers:{
+                           Authorization:"Bearer [[${session.token}]]"
+                       },
+                       success(data){
+                           if(data.status==0){
+                               window.location.reload()
+                           }
+                       }
+                   })
+
+                   layer.close(index)
+               }
+           })
+
+       })
+   });
+   // function update(id) {
+   //     alert("更新 "+id)
+   // }
+   // function del(id) {
+   //     alert("删除 "+id)
+   //
+   // }
+</script>
+
+</body>
+</html>

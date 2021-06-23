@@ -1,0 +1,99 @@
+/* 全局 */
+html,body{overflow-x: hidden;}
+html body{margin-top: 61px;}
+html{background-color: #F2F2F2;}
+i{font-style: normal;}
+/* 辅助 */
+a:hover{color: #009688; transition: all .3s;}
+pre{padding: 10px 15px; margin: 10px 0; font-size: 12px; border-left: 6px solid #009688;  background-color: #f8f8f8; font-family: Courier New; overflow: auto;}
+
+.layui-container{padding: 0;}
+.fly-main{width: 1079px; min-height: 600px; margin: 0 auto 15px;}
+.layui-badge{height: 20px; line-height: 20px; border-radius: 2px;}
+
+.fly-link{color: #01AAED;}
+.fly-link:hover{color: #5FB878;}
+.fly-grey{color: #999;}
+
+.fly-msg, .fly-error{padding: 10px 15px; line-height: 24px;}
+.fly-msg{background-color:#F8F8F8; color:#666;}
+.fly-msg a{color:#4F99CF}
+.fly-editbox{position: relative;}
+
+.fly-marginTop{margin-top: 15px;}
+.fly-mid{display: inline-block; height: 10px; width: 1px; margin: 0 10px; vertical-align: middle; background-color: #e2e2e2;}
+.fly-right{position: absolute; right: 15px; top: 0;}
+
+/* 头部 */
+.medusa-header{position: fixed; left: 0; top: 0; z-index: 10000; width: 100%; height: 60px; border-bottom: 1px solid #404553; border-right: 1px solid #404553; border-radius: 0;}
+/*.medusa-logo{*/
+    /*position: absolute;*/
+    /*left: 15px; */
+    /*top: 11px;}*/
+.medusa-logo{
+    margin-top: 15px;
+}
+.medusa-header .layui-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+/* 底部 */
+.medusa-footer {margin: 50px 0 0; padding: 20px 0 30px; line-height: 30px; text-align: center; color: #737573; border-top: 1px solid #e2e2e2;}
+.medusa-footer a{padding:0 6px; font-weight: 300; color: #333;}
+.medusa-footer a:hover{color: #777;}
+/* 面板 */
+.medusa-panel{margin-bottom: 15px; border-radius: 2px; background-color: #fff; box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);}
+/* 专栏 */
+.medusa-column{height: 50px; line-height: 50px;}
+.medusa-column ul li{position: relative; display: inline-block; height: 50px;}
+.medusa-column ul li a{padding: 0 20px;}
+.medusa-column ul li.layui-this:after{ position: absolute; bottom: 13px; left: 8px; z-index: 0; width: 50px; height: 22px; border: 1px solid #5FB878; border-radius: 2px;}
+.medusa-column ul li.layui-this a{color: #5FB878;}
+.medusa-column-right{position: absolute; right: 0; top: 0;}
+.medusa-column-right .layui-btn{vertical-align: initial;}
+/* 列表 */
+.medusa-list li{position: relative; height: 45px; line-height: 22px; padding: 15px 15px 15px 75px; border-bottom: 1px dotted #e2e2e2;}
+.medusa-list li:last-child{border-bottom: none;}
+.medusa-list li h2,
+.medusa-list li h2 a,
+.medusa-list-info{white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+.medusa-list li h2{height: 26px; font-size: 0;}
+.medusa-list li h2 a{display: inline-block; max-width: 80%; padding-right: 10px; font-size: 16px;}
+.medusa-list li h2 .layui-badge{top: -2px; height: 16px; line-height: 16px; padding: 0 5px; margin-right: 10px; font-size: 12px; border: 1px solid #5FB878; background: none; color: #5FB878;}
+
+.medusa-list-info{position: relative; font-size: 13px; color: #999;}
+.medusa-list-info>*{padding-right: 15px;}
+.medusa-list-info a[link]{color: #999;}
+.medusa-list-info a[link]:hover{color: #5FB878;}
+.medusa-list-info .icon-renzheng{position: relative; top: 1px; margin-right: 3px;}
+.medusa-list-info .fly-badge-vip{position: relative; margin-left: 2px;}
+.fly-list-kiss{color: #FF5722;}
+.fly-list-nums{position: absolute; right: 0; top: 0; padding-right: 0!important;}
+.fly-list-nums i{position: relative; padding: 0 3px 0 15px;}
+
+.fly-list-badge{position: absolute; right: 15px; top: 15px; font-size: 0;}
+.fly-list-badge .layui-badge{margin-left: 5px; border-radius: 2px; font-size: 12px;}
+/* 分页 */
+.laypage-main,
+.laypage-main *{display:inline-block; *display:inline; *zoom:1; vertical-align:top;}
+.laypage-main{margin: 20px 0; border: 1px solid #009E94; border-right: none; border-bottom: none; font-size: 0;}
+.laypage-main *{padding: 0 20px; line-height: 36px; border-right: 1px solid #009E94; border-bottom: 1px solid #009E94; font-size: 14px;}
+.laypage-main .laypage-curr{background-color:#009E94; color:#fff;}
+
+.detail-box{
+    padding: 20px;
+}
+.detail-box h1:first-child{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.medusa-detail-user{
+    padding:10px 0;
+}
+.medusa-detail-user span{
+    display: flex;
+    justify-content: center; // 内容自适应：上下居中
+    align-items: center; // 子项对齐方式：左右居中
+}

@@ -1,0 +1,20 @@
+<html xmlns:th="http://www.thymeleaf.org">
+    <div class="medusa-panel medusa-column">
+        <div class="layui-container">
+            <ul class="layui-clear" >
+                <ul>
+                    <li th:each="panel:${#servletContext.getAttribute('specColumns')}">
+                        <a th:href="${panel.columnId}==1?'/':@{'/article/column/'+${panel.columnId}}"
+                           th:text="${panel.columnName}"></a>
+                    </li>
+                </ul>
+
+            </ul>
+
+            <div th:if="${session.token}" class="medusa-column-right">
+                <a href="/article/write" class="layui-btn">发表新帖</a>
+                <a href="/logout" class="layui-btn">退出登录</a>
+            </div>
+        </div>
+    </div>
+</html>

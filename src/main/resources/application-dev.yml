@@ -1,0 +1,53 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.193.1:3306/myblog?useSSL=false&serverTimezone=UTC&characterEncoding=UTF8
+# 192.168.93.128
+    username: root
+    password: 123456
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      maximum-pool-size: 50 # 连接池最大连接数，默认是10
+      minimum-idle: 5 #最小空闲连接数量
+      idle-timeout: 18000 #空闲连接存活最大时间，默认600000（10分钟）
+      pool-name: sunnyHikariCP  #连接池名称
+      connection-test-query: SELECT 1
+
+medusa:
+  security:
+    jwt-key: jiangbo19931222
+    token-expired-in: 86400000
+#  redis:
+#    database: 0
+#    host: 127.0.0.1
+#    port: 6379
+#    password:
+#    timeout: 3s
+#    jedis:
+#      pool:
+#        max-active: -1  #最大活跃连接数，负数为不限制
+#        max-wait: 3s  #等待可用连接的最大时间，负数为不限制
+#        min-idle: 50  #最小空闲连接数
+#        max-idle: 500 #最大空闲连接数
+# 配置slq打印日志
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath*:/mapper/**/*.xml
+  global-config:
+    db-config:
+      logic-delete-value: NOW()
+      logic-not-delete-value: 'NULL'
+
+
+##七牛云配置
+#qiniu_cloud:
+#  accessKey: 77Ijw81NI1bxowFOxijIXUd6PwfcZ_W__pVV6nel
+#  secretKey: kV_bCKtw6MPGidX7UpfFA6ZU3VJzCwwvG-rBFk0r
+#  bucket: sunny-fly
+#  reqUrl: http://qalvwutlt.bkt.clouddn.com/
+server:
+  port: 8081
+  servlet:
+    encoding:
+      force: true

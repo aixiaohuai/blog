@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>小坏小坏</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="小坏小坏">
+    <meta name="description" content="小坏小坏">
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+</head>
+<body>
+
+<!--公共头-->
+<div th:replace="~{common/header}"></div>
+<!--导航栏信息-->
+<div th:replace="~{common/panel}"></div>
+
+<div class="layui-container">
+    <div class="layui-row layui-col-space15">
+        <div class="content detail">
+            <div class="medusa-panel detail-box">
+                <h1 th:text="${articleDetail.articleTitle}" style="font-family:楷体,楷体_GB2312, SimKai"></h1>
+
+                <div class="detail-about">
+                    <div class="medusa-detail-user">
+                        <span th:text="${#dates.format(articleDetail.releaseDate,'yyyy-MM-dd HH:mm:ss')}"></span>
+                    </div>
+                </div>
+                <div class="detail-body photos" th:utext="${articleDetail.articleContent}">
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{common/footer}"></div>
+
+<script src="/layui/layui.js"></script>
+<script>
+    layui.use( function(){
+
+    });
+</script>
+
+</body>
+</html>
